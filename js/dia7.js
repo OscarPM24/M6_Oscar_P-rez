@@ -44,37 +44,29 @@ function piramide() {
     let cols = parseInt(prompt("Número de columnas?"));
     let rows = Math.floor((cols / 2) + 1);
     let t = document.createElement("table"); // crea table
+    let vermell = 1;
 
     for (let i = 1; i <= rows; i++) {
         let tr = document.createElement("tr"); // crea tr
-        
-        for (let j = 1; j < rows + 1 - i; j++) {
+        let blanc = (cols-vermell)/2;
+
+        for (let j = 0; j < blanc; j++) {
             let td = document.createElement("td");
-            tr.appendChild(td); // añade el td al tr
+            tr.appendChild(td);
         }
 
-        for (let j = 1; j > rows + 1 - i; j++) {
+        for (let j = 0; j < vermell; j++) {
             let td = document.createElement("td");
+            td.style.backgroundColor = "red";
             tr.appendChild(td); 
         }
 
-        for (let j = rows; j <= i + 3; j++) {
+        for (let j = 0; j < blanc; j++) {
             let td = document.createElement("td");
-            td.style.backgroundColor = "red";
-            tr.appendChild(td);
-        }
-
-        for (let j = rows + 1; j <= i + 3; j++) {
-            let td = document.createElement("td");
-            td.style.backgroundColor = "red";
-            tr.appendChild(td);
-        }
-
-        for (let j = i + 3; j < cols; j++) {
-            let td = document.createElement("td");
-            tr.appendChild(td); // añade el td al tr
+            tr.appendChild(td); 
         }
         t.appendChild(tr); // añade el tr al t
+        vermell += 2;
     }
     document.body.appendChild(t); // añade la table al documento html
 }
