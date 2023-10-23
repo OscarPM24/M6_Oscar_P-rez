@@ -52,8 +52,8 @@ function comptaLletres() {
     let b = 0;
 
     for (let i = 0; i < frase.length; i++) {
-        if (frase.charAt(i).toLowerCase() == 'a') { a++ } 
-        else if (frase.charAt(i).toLowerCase() == 'b') { b++; }
+        if (frase[i].toLowerCase() == 'a') { a++ } 
+        else if (frase[i].toLowerCase() == 'b') { b++; }
     }
     
     if (a > b) { console.log(`Hay mas 'a'(${a}) que 'b'(${b})`); } 
