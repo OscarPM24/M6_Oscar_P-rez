@@ -15,56 +15,52 @@ function dataActual() {
     document.write(`% del dia que queda ${(100 - (secondsToday / 86400) * 100).toFixed(2)}%</h1>`);
 }
 
+/* Función que pide un número por prompt
+   y calcula si es un código de barras válido (EAN8 y EAN13) */
 
 function codiBarras() {
     let codigo = prompt("Introducir código de barras");
-    let longitud = codigo.length;
     let control = 0;
     let EAN8 = false;
     let EAN13 = false;
 
     if (codigo.length <= 8) { EAN8 = true; }
     else if (codigo.length <= 13 && codigo.length > 8) { EAN13 = true; }
-    else if (codigo.length > 13) {
+    else {
         document.write("Error: Codigo invàlido");
         return;
     }
 
     if (EAN8) {
-        if (codigo.length < 8) {
-            for (let i = 0; i < 8-longitud; i++) { codigo = "0" + codigo; }
-        }
-        for (let i = 6; i >= 0; i--) {
-            if ((i+1) % 2 == 0) {
-                control += parseInt(codigo[i]);
-            } else if ((i+1) % 2 == 1) {
-                control += parseInt(codigo[i] * 3);
-            }
-        }
+        if (codigo.length < 8) { codigo = codigo.padStart(8, '0'); }
+        control = calculaControl(codigo, 6);
     }
 
     else if (EAN13) {
-        if (codigo.length < 13) {
-            for (let i = 0; i < 13-longitud; i++) { codigo = "0" + codigo; }
-        }
-        for (let i = 11; i >= 0; i--) {
-            if ((i+1) % 2 == 0) {
-                control += parseInt(codigo[i]);
-            } else if ((i+1) % 2 == 1) {
-                control += parseInt(codigo[i] * 3);
-            }
-        }
+        if (codigo.length < 13) { codigo = codigo.padStart(13, '0'); }
+        control = calculaControl(codigo, 11);
     }
 
-    console.log(codigo);
-    console.log(control);
-    console.log(EAN8);
-    console.log(EAN13);
-    console.log((parseInt(control) + parseInt(codigo[codigo.length - 1])) % 10);
-
-    if ((parseInt(control) + parseInt(codigo[codigo.length - 1])) % 10 == 0) { document.write("Correcto"); } 
-    else { document.write("Incorrecto"); }
-
-
-
+    if ((parseInt(control) + parseInt(codigo[codigo.length - 1])) % 10 == 0) { document.write(`<h1>${codigo} → Correcto</h1>`); } 
+    else { document.write(`<h1>${codigo} → Incorrecto</h1>`); }
 }
+
+function calculaControl(codigo, index) {
+    let pos = 1;
+    let control = 0;
+    for (index; index >= 0; index--, pos++) {
+        if (pos % 2 == 0) {
+            control += parseInt(codigo[index]);
+        } else if (pos % 2 == 1) {
+            control += parseInt(codigo[index] * 3);
+        }
+    }
+    return control;
+}
+
+
+// 65839522 correcto
+// 65839521 incorrecto 
+
+// 5029365779425 correcto
+// 5129365779425 incorrecto
